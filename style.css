@@ -19,6 +19,7 @@
   --cut: 14px;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
@@ -258,7 +259,7 @@ main {
 /* Convite */
 .invite, .victory { align-items: center; text-align: center; }
 .invite::before, .victory::before {
-  content: ""; position: absolute; z-index: -1; left: 50%; top: -40px; width: min(700px, 120%); height: 520px; transform: translateX(-50%);
+  content: ""; position: absolute; z-index: -1; left: 50%; top: -40px; width: 100%; height: 520px; transform: translateX(-50%);
   background: radial-gradient(closest-side, rgba(245, 196, 81, .28), transparent);
   pointer-events: none;
 }
