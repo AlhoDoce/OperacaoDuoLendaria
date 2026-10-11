@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Operação Duo Lendária</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Exo+2:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<header class="hud">
+  <div class="hud-in">
+    <nav class="hud-nav" aria-label="Progresso da missão">
+      <ol id="progress"></ol>
+      <p id="stepLabel" aria-live="polite"></p>
+    </nav>
+    <button type="button" id="audioBtn" class="chip" aria-pressed="false">Som: desligado</button>
+  </div>
+</header>
+
+<main id="app">
+
+  <!-- 0 · ABERTURA -->
+  <section class="stage" data-step="0" aria-labelledby="t0">
+    <p class="eyebrow">Missão especial detectada</p>
+    <h1 id="t0" class="title mega" tabindex="-1">Beatriz, você foi convocada!</h1>
+    <p class="lead" id="introSub">Uma missão lendária acaba de surgir. E dessa vez não é para carregar random.</p>
+
+    <div class="panel mission">
+      <div class="mission-head">
+        <span class="rarity r-lendaria">Lendária</span>
+        <span class="mission-code">Ordem nº 001</span>
+      </div>
+      <dl class="mission-list">
+        <div><dt>Missão</dt><dd>Operação Duo Lendária</dd></div>
+        <div><dt>Jogadora principal</dt><dd>Beatriz</dd></div>
+        <div><dt>Dificuldade</dt><dd>Impossível, segundo o departamento de pessimismo</dd></div>
+        <div><dt>Recompensa</dt><dd>Vitórias, boas risadas e uma parceria diferenciada</dd></div>
+        <div><dt>Status</dt><dd class="blink">Aguardando a decisão da jogadora</dd></div>
+      </dl>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn primary big" id="enterBtn">Entrar no lobby</button>
+    </div>
+  </section>
+
+  <!-- 1 · LOBBY -->
+  <section class="stage" data-step="1" aria-labelledby="t1" hidden>
+    <p class="eyebrow">Lobby · Heroína selecionada</p>
+    <h2 id="t1" class="title" tabindex="-1">Beatriz — A Lenda do Servidor</h2>
+
+    <div class="lobby">
+      <div class="avatar-wrap">
+        <svg class="avatar" viewBox="0 0 240 270" role="img" aria-label="Ilustração original de uma heroína de fantasia ruiva">
+          <defs>
+            <linearGradient id="gHair" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb347"/><stop offset=".45" stop-color="#ff6a2b"/><stop offset="1" stop-color="#b5221a"/></linearGradient>
+            <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0b8"/><stop offset=".5" stop-color="#f5c451"/><stop offset="1" stop-color="#a86f14"/></linearGradient>
+            <linearGradient id="gArmor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7b4dff"/><stop offset="1" stop-color="#2a1a70"/></linearGradient>
+            <radialGradient id="gBack" cx=".5" cy=".35" r=".8"><stop offset="0" stop-color="#4a2a8a"/><stop offset="1" stop-color="#0d0a24"/></radialGradient>
+            <clipPath id="hex"><polygon points="120,8 226,68 226,202 120,262 14,202 14,68"/></clipPath>
+          </defs>
+          <g clip-path="url(#hex)">
+            <rect width="240" height="270" fill="url(#gBack)"/>
+            <circle cx="120" cy="96" r="78" fill="#ff6a2b" opacity=".18"/>
+            <path d="M52 250 C30 170 40 60 120 44 C200 60 212 170 190 250 Z" fill="url(#gHair)"/>
+            <path d="M40 270 C50 212 86 198 120 198 C154 198 190 212 200 270 Z" fill="url(#gArmor)"/>
+            <path d="M84 206 L120 236 L156 206" fill="none" stroke="url(#gGold)" stroke-width="5" stroke-linejoin="round"/>
+            <rect x="106" y="160" width="28" height="46" rx="10" fill="#f2c4a4"/>
+            <ellipse cx="120" cy="124" rx="44" ry="52" fill="#fbd6ba"/>
+            <path d="M74 132 C66 76 96 52 124 54 C158 54 176 84 166 134 C160 100 142 86 122 84 C104 92 84 100 74 132 Z" fill="url(#gHair)"/>
+            <path d="M96 124 q8 -6 16 0 M130 124 q8 -6 16 0" fill="none" stroke="#3a1c2a" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M108 150 q12 9 24 0" fill="none" stroke="#c2504e" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M92 76 L106 58 L120 72 L134 58 L148 76" fill="none" stroke="url(#gGold)" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle cx="120" cy="70" r="5" fill="#ff7eb0"/>
+          </g>
+          <polygon points="120,8 226,68 226,202 120,262 14,202 14,68" fill="none" stroke="url(#gGold)" stroke-width="5"/>
+        </svg>
+        <span class="rarity r-mitica avatar-tag">Raridade única</span>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title">Atributos</h3>
+        <div id="lobbyStats" class="stats"></div>
+        <p class="fine">Estatísticas 100% fictícias, criadas só para a brincadeira. Não representam dados reais da conta.</p>
+      </div>
+    </div>
+
+    <blockquote class="quote">Tem gente que entra em uma partida e simplesmente joga. E tem gente que consegue tornar a experiência muito mais interessante. Você tem seu próprio estilo, manda bem e merece uma dupla que reconheça isso.</blockquote>
+    <p class="lead accent">Entre tantos heróis disponíveis, meu interesse acabou selecionando você.</p>
+
+    <div class="actions">
+      <button type="button" class="btn ghost" data-go="prev">Voltar</button>
+      <button type="button" class="btn primary" data-go="next">Desbloquear conquistas</button>
+    </div>
+  </section>
+
+  <!-- 2 · CONQUISTAS -->
+  <section class="stage" data-step="2" aria-labelledby="t2" hidden>
+    <p class="eyebrow">Sala de troféus</p>
+    <h2 id="t2" class="title" tabindex="-1">Conquistas da Beatriz</h2>
+    <p class="lead">Toque em cada emblema para revelar o que ele guarda.</p>
+    <p class="counter" aria-live="polite"><b id="achCount">0</b> de 8 desbloqueadas</p>
+
+    <div id="achGrid" class="ach-grid"></div>
+
+    <div id="secret" class="panel secret" role="status" hidden>
+      <span class="rarity r-lendaria">Conquista secreta</span>
+      <p class="secret-text">Conquista secreta desbloqueada: você vale o convite.</p>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn ghost" data-go="prev">Voltar</button>
+      <button type="button" class="btn primary" data-go="next">Enfrentar o próximo evento</button>
+    </div>
+  </section>
+
+  <!-- 3 · CHEFE -->
+  <section class="stage" data-step="3" aria-labelledby="t3" hidden>
+    <p class="eyebrow">Evento especial</p>
+    <h2 id="t3" class="title" tabindex="-1">Chefe final: o Pessimismo da Beatriz</h2>
+    <p class="lead">Antes de formar essa dupla, precisamos enfrentar um inimigo que nem o melhor jungler consegue derrotar facilmente: a certeza de que tudo vai dar errado antes mesmo da partida começar.</p>
+
+    <div class="panel boss-panel">
+      <div class="boss-top">
+        <span class="boss-name">Pessimismo <small>Nv. Mítico</small></span>
+        <span class="boss-hits">Invocações: <b id="hitCount">0</b></span>
+      </div>
+      <div class="bar hp" role="progressbar" aria-label="Energia do chefe" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" id="hpBar"><i id="hpFill" style="width:100%"></i></div>
+
+      <div class="boss-arena">
+        <svg id="boss" class="boss" viewBox="0 0 220 190" role="img" aria-label="Criatura original em forma de nuvem rabugenta, representando o pessimismo">
+          <defs><linearGradient id="gBoss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b4bd6"/><stop offset="1" stop-color="#251a5c"/></linearGradient></defs>
+          <path d="M70 40 L60 12 L88 32 Z M150 40 L160 12 L132 32 Z" fill="#b5221a"/>
+          <path d="M40 120 C10 118 8 78 40 72 C40 40 84 24 108 46 C132 22 180 40 178 74 C214 78 212 122 180 122 C176 150 140 160 112 146 C88 162 46 152 40 120 Z" fill="url(#gBoss)" stroke="#9d86ff" stroke-width="3"/>
+          <g class="boss-eyes">
+            <ellipse cx="84" cy="88" rx="13" ry="15" fill="#f1ecff"/><ellipse cx="136" cy="88" rx="13" ry="15" fill="#f1ecff"/>
+            <circle cx="86" cy="93" r="6" fill="#0a0d1c"/><circle cx="134" cy="93" r="6" fill="#0a0d1c"/>
+            <path d="M66 70 L100 80 M154 70 L120 80" stroke="#0a0d1c" stroke-width="6" stroke-linecap="round"/>
+          </g>
+          <path class="boss-mouth" d="M88 126 q22 -16 44 0" fill="none" stroke="#0a0d1c" stroke-width="6" stroke-linecap="round"/>
+          <g class="rain" stroke="#7fb3ff" stroke-width="4" stroke-linecap="round"><path d="M70 164 v12"/><path d="M110 170 v12"/><path d="M150 164 v12"/></g>
+        </svg>
+        <p id="bossLine" class="speech" aria-live="polite">“Nem tenta. Já sei que vai dar errado.”</p>
+      </div>
+
+      <div class="actions tight">
+        <button type="button" class="btn primary" id="hitBtn">Invocar pessimismo</button>
+      </div>
+    </div>
+
+    <div id="bossWin" class="panel secret" role="status" hidden>
+      <p class="secret-text">Pessimismo derrotado... por enquanto.</p>
+      <span class="rarity r-mitica">Passiva especial desbloqueada</span>
+      <h3 class="panel-title">Desconfiança Crônica</h3>
+      <p>Prevê todos os cenários ruins possíveis, mas continua jogando porque, no fundo, ainda existe uma pequena esperança.</p>
+      <p class="fine">Esta habilidade possui recarga infinita.</p>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn ghost" data-go="prev">Voltar</button>
+      <button type="button" class="btn primary" data-go="next">Analisar a dupla</button>
+    </div>
+  </section>
+
+  <!-- 4 · SINERGIA -->
+  <section class="stage" data-step="4" aria-labelledby="t4" hidden>
+    <p class="eyebrow">Laboratório do matchmaking</p>
+    <h2 id="t4" class="title" tabindex="-1">Análise de compatibilidade da dupla</h2>
+
+    <div class="panel scan-panel" id="scanPanel">
+      <div class="duo-line"><span>Kayky</span><i aria-hidden="true"></i><span>Beatriz</span></div>
+      <p id="scanStatus" class="scan-status" aria-live="polite">Pronto para analisar.</p>
+      <div id="synStats" class="stats"></div>
+      <div class="actions tight">
+        <button type="button" class="btn primary" id="calcBtn">Calcular sinergia</button>
+      </div>
+    </div>
+
+    <div id="synResult" class="panel secret" role="status" hidden>
+      <p class="secret-text">Resultado: compatibilidade perigosamente alta.</p>
+      <p>Os cálculos indicam que vale a pena testar essa combinação. A ciência não explica tudo, mas o matchmaking pode tentar.</p>
+    </div>
+    <p class="fine center">Todas as estatísticas são fictícias e servem só para entretenimento.</p>
+
+    <div class="actions">
+      <button type="button" class="btn ghost" data-go="prev">Voltar</button>
+      <button type="button" class="btn primary" data-go="next">Ver a missão final</button>
+    </div>
+  </section>
+
+  <!-- 5 · CONVITE -->
+  <section class="stage invite" data-step="5" aria-labelledby="t5" hidden>
+    <svg class="emblem" viewBox="0 0 120 120" aria-hidden="true">
+      <defs><linearGradient id="gE" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0b8"/><stop offset=".5" stop-color="#f5c451"/><stop offset="1" stop-color="#a86f14"/></linearGradient></defs>
+      <rect x="24" y="24" width="72" height="72" transform="rotate(45 60 60)" fill="#1a1440" stroke="url(#gE)" stroke-width="4"/>
+      <rect x="34" y="34" width="52" height="52" transform="rotate(45 60 60)" fill="none" stroke="url(#gE)" stroke-width="1.5" opacity=".6"/>
+      <path d="M60 78 C38 62 44 44 60 54 C76 44 82 62 60 78 Z" fill="#ff7eb0"/>
+    </svg>
+    <p class="eyebrow gold">Missão final</p>
+    <h2 id="t5" class="title" tabindex="-1">Beatriz, tenho uma missão para você...</h2>
+
+    <div class="panel letter">
+      <p>Agora falando sério por um instante...</p>
+      <p>Eu gosto da ideia de jogar com você porque você manda bem, tem seu próprio jeito de jogar e consegue deixar as partidas mais interessantes.</p>
+      <p>E, sinceramente, acho que seria muito legal ter você como minha dupla.</p>
+      <p>Prometo tentar não alimentar seu pessimismo, comemorar nossas vitórias e continuar acreditando na partida mesmo quando você já estiver decretando o fim do mundo.</p>
+      <p>Se perdermos, a gente tenta de novo. Se ganharmos, comemoramos. E se você disser “já perdemos” antes dos dois minutos, pelo menos eu já vou estar preparado. 😂</p>
+      <p>Então, Beatriz...</p>
+    </div>
+
+    <p class="question">Quer ser minha duo no Mobile Legends?</p>
+
+    <div class="actions stack">
+      <button type="button" class="btn primary big glow" id="acceptBtn">Sim, aceito ser sua duo! ❤️🎮</button>
+      <button type="button" class="btn ghost big" id="analyzeBtn">Preciso analisar... 🤨</button>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn link" data-go="prev">Voltar para a análise</button>
+    </div>
+  </section>
+
+  <!-- 6 · VITÓRIA -->
+  <section class="stage victory" data-step="6" aria-labelledby="t6" hidden>
+    <svg class="medal" viewBox="0 0 160 180" role="img" aria-label="Medalha da dupla lendária">
+      <defs><linearGradient id="gM" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0b8"/><stop offset=".5" stop-color="#f5c451"/><stop offset="1" stop-color="#a86f14"/></linearGradient></defs>
+      <path d="M50 96 L34 172 L62 154 L80 176 L98 154 L126 172 L110 96 Z" fill="#e23d28"/>
+      <path d="M66 100 L62 154 L80 176 L98 154 L94 100 Z" fill="#7b4dff"/>
+      <circle cx="80" cy="68" r="56" fill="url(#gM)"/>
+      <circle cx="80" cy="68" r="44" fill="#1a1440" stroke="#fff0b8" stroke-width="2"/>
+      <polygon points="80,34 89,57 114,58 94,73 101,97 80,83 59,97 66,73 46,58 71,57" fill="url(#gM)"/>
+    </svg>
+    <p class="eyebrow gold">Vitória</p>
+    <h2 id="t6" class="title mega" tabindex="-1">Duo formada com sucesso!</h2>
+    <p class="lead">Uma nova lenda acaba de nascer no servidor.</p>
+
+    <div class="panel duo-card">
+      <p class="duo-names"><span>Kayky</span><b>+</b><span>Beatriz</span></p>
+      <dl id="duoStats" class="duo-stats"></dl>
+      <p class="fine">Estatísticas fictícias da dupla. As reais a gente descobre jogando.</p>
+    </div>
+
+    <div class="panel wa">
+      <h3 class="panel-title">Falta só confirmar</h3>
+      <p id="waNote">A mensagem já está pronta, mas ainda não foi enviada. Ela só vai quando você tocar em enviar dentro do WhatsApp.</p>
+      <p id="waConfig" class="warn" hidden>O número do WhatsApp ainda não está configurado corretamente. Copie a mensagem abaixo e envie manualmente.</p>
+      <div class="actions stack">
+        <a class="btn primary big" id="waLink" target="_blank" rel="noopener">Enviar confirmação pelo WhatsApp</a>
+        <button type="button" class="btn ghost" id="copyBtn">Copiar mensagem</button>
+      </div>
+      <p id="copyStatus" class="fine" role="status" aria-live="polite"></p>
+      <details id="msgDetails">
+        <summary>Ver a mensagem preparada</summary>
+        <label class="sr" for="msgBox">Mensagem preparada</label>
+        <textarea id="msgBox" readonly rows="9"></textarea>
+      </details>
+    </div>
+
+    <p class="quote plain">Agora só falta selecionar os heróis, entrar na fila e descobrir se essa dupla vai conquistar o servidor ou passar a partida inteira discutindo sobre quem errou. 😂❤️</p>
+
+    <div class="actions">
+      <button type="button" class="btn ghost" id="restartBtn">Reiniciar a experiência</button>
+    </div>
+  </section>
+</main>
+
+<!-- Carregamento -->
+<div id="loading" class="loading" role="status" aria-live="polite" hidden>
+  <div class="loading-in">
+    <div class="spinner" aria-hidden="true"></div>
+    <p id="loadingMsg">Carregando...</p>
+    <div class="bar"><i id="loadingFill"></i></div>
+  </div>
+</div>
+
+<!-- Modal: conquista -->
+<dialog id="achDialog" aria-labelledby="achName">
+  <div class="dlg">
+    <span id="achIcon" class="ach-icon big-icon" aria-hidden="true"></span>
+    <span id="achRarity" class="rarity"></span>
+    <h3 id="achName" class="panel-title"></h3>
+    <p id="achText" class="dlg-text"></p>
+    <button type="button" class="btn primary" data-close>Guardar conquista</button>
+  </div>
+</dialog>
+
+<!-- Modal: análise -->
+<dialog id="analyzeDialog" aria-labelledby="anTitle">
+  <div class="dlg">
+    <h3 id="anTitle" class="panel-title">Análise em andamento...</h3>
+    <div id="anPhase1">
+      <div class="spinner" aria-hidden="true"></div>
+      <p class="dlg-text">Beatriz está calculando 47 maneiras diferentes de essa missão dar errado.</p>
+    </div>
+    <div id="anPhase2" hidden>
+      <p class="secret-text">Mas e se dessa vez der certo? 👀</p>
+      <div class="actions stack">
+        <button type="button" class="btn primary" data-close>Voltar ao convite</button>
+        <button type="button" class="btn ghost" data-close>Talvez eu aceite</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script src="script.js"></script>
+</body>
+</html>
